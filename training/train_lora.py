@@ -105,6 +105,27 @@ class TextvqaDataset(Dataset):
     def __len__(self):
         return len(self.questions)
 
+class PopeDataset(Dataset):
+
+    def __init__(self, questions, image_folder):
+        self.questions = questions
+        self.image_folder = image_folder
+
+    def __getitem__(self, index):
+        
+        line = self.questions[index]
+        # print(line)
+        image_file = line["image"]
+        qs = line["text"]
+        ans = line["label"]
+
+        prompt = "<image>" + qs
+        image = Image.open(os.path.join(self.image_folder, image_file))
+
+        return {'question':prompt, 'raw_image':image, 'answer':ans}
+
+    def __len__(self):
+        return len(self.questions)
 
 def collate_fn(data):
 
@@ -188,6 +209,18 @@ elif 'textvqa' in training_args.dataset:
         questions = json.load(file)['data']
     image_folder = '/liymai24/sjtu/siqi/leloykun/eval/textvqa/data/train_images'
     train_dataset = TextvqaDataset(questions, image_folder)
+elif 'pope' in training_args.dataset:
+    # pope_dataset
+    questions = []
+    # 打开并读取 JSONL 文件
+    with open('/liymai24/sjtu/siqi/leloykun/eval/pope/coco_pope_random.jsonl', 'r') as file:
+        # 逐行读取文件
+        for line in file:
+            # 解析每行 JSON 对象
+            json_obj = json.loads(line)
+            questions.append(json_obj)
+    image_folder = '/liymai24/sjtu/siqi/leloykun/eval/pope/val2014/'
+    train_dataset = PopeDataset(questions, image_folder)    
 
 # Initialize the Trainer with custom collate_fn
 trainer = ChameleonTrainer(
