@@ -21,7 +21,8 @@ from typing import TYPE_CHECKING, Dict, Iterable, List, Optional, Tuple, Union
 import numpy as np
 import requests
 from packaging import version
-
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 from .utils import (
     ExplicitEnum,
     is_jax_tensor,
