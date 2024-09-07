@@ -1897,6 +1897,7 @@ class ChameleonForConditionalGeneration(ChameleonPreTrainedModel):
     @torch.no_grad()
     def generate(
         self,
+        generate_wo_quant=True,
         inputs: Optional[torch.Tensor] = None,
         generation_config: Optional[GenerationConfig] = None,
         logits_processor: Optional[LogitsProcessorList] = None,
