@@ -19,7 +19,7 @@
 # # Generate discrete image tokens
 # output = model.generate(
 #     **inputs,
-#     generate_wo_quant=False,
+#     generate_wo_quant=True,
 #     multimodal_generation_mode="image-only",
 #     # Note: We need to set `max_new_tokens` to 1026 since the model generates the `image_start_token` marker token first, then 1024 image tokens, and finally the `image_end_token` marker token.
 #     max_new_tokens=1026,
